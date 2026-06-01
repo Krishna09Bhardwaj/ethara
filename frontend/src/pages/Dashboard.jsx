@@ -29,10 +29,10 @@ export default function Dashboard() {
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Dashboard</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <StatsCard title="Total Products" value={data.total_products} color="indigo" icon="📦" />
-        <StatsCard title="Total Customers" value={data.total_customers} color="green" icon="👥" />
-        <StatsCard title="Total Orders" value={data.total_orders} color="indigo" icon="🛒" />
-        <StatsCard title="Low Stock Items" value={data.low_stock_products.length} color={data.low_stock_products.length > 0 ? 'red' : 'green'} icon="⚠️" />
+        <StatsCard title="Total Products" value={data.total_products} color="indigo" icon="📦" to="/products" />
+        <StatsCard title="Total Customers" value={data.total_customers} color="green" icon="👥" to="/customers" />
+        <StatsCard title="Total Orders" value={data.total_orders} color="indigo" icon="🛒" to="/orders" />
+        <StatsCard title="Low Stock Items" value={data.low_stock_products.length} color={data.low_stock_products.length > 0 ? 'red' : 'green'} icon="⚠️" to="/products" />
       </div>
 
       {data.low_stock_products.length > 0 && (

@@ -4,7 +4,6 @@ services:
     runtime: docker
     dockerfilePath: ./backend/Dockerfile
     dockerContext: ./backend
-    plan: free
     envVars:
       - key: DATABASE_URL
         fromDatabase:
@@ -13,12 +12,10 @@ services:
       - key: FRONTEND_URL
         sync: false
 
-  - type: web
+  - type: static
     name: ethara-frontend
-    runtime: static
-    buildCommand: cd frontend && npm install && npm run build
+    buildCommand: cd frontend && npm ci && npm run build
     staticPublishPath: ./frontend/dist
-    plan: free
     envVars:
       - key: VITE_API_URL
         sync: false

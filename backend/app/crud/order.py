@@ -94,6 +94,16 @@ def create_order(db: Session, order_data: OrderCreate) -> OrderResponse:
 
     return get_order(db, order.id)
 
+def update_order_status(db: Session, order_id: int, status: str) -> OrderResponse:
+    order = db.query(Order).filter(Order.id == order_id).first()
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    if status not in ("pending", "completed", "cancelled"):
+        raise HTTPException(status_code=400, detail="Invalid status")
+    order.status = status
+    db.commit()
+    return get_order(db, order_id)
+
 def delete_order(db: Session, order_id: int) -> None:
     order = (
         db.query(Order)

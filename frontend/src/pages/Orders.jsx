@@ -36,6 +36,16 @@ export default function Orders() {
       .finally(() => setFormLoading(false))
   }
 
+  function handleComplete(id) {
+    api.patch(`/orders/${id}/status`, { status: 'completed' })
+      .then(() => {
+        setSuccess('Order marked as completed.')
+        fetchOrders()
+        setTimeout(() => setSuccess(''), 3000)
+      })
+      .catch(err => setError(err.response?.data?.detail || 'Failed to update order.'))
+  }
+
   function handleDelete(id) {
     if (!window.confirm(`Cancel order #${id}? Stock will be restored.`)) return
     api.delete(`/orders/${id}`)
@@ -104,7 +114,10 @@ export default function Orders() {
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusStyle[o.status] || 'bg-slate-800 text-slate-400'}`}>{o.status}</span>
                     </td>
                     <td className="px-6 py-4 text-sm text-slate-400">{new Date(o.created_at).toLocaleDateString()}</td>
-                    <td className="px-6 py-4 text-right" onClick={e => e.stopPropagation()}>
+                    <td className="px-6 py-4 text-right space-x-3" onClick={e => e.stopPropagation()}>
+                      {o.status === 'pending' && (
+                        <button onClick={() => handleComplete(o.id)} className="text-green-400 hover:text-green-300 text-sm font-medium transition-colors">Complete</button>
+                      )}
                       <button onClick={() => handleDelete(o.id)} className="text-red-500 hover:text-red-400 text-sm font-medium transition-colors">Cancel</button>
                     </td>
                   </tr>
